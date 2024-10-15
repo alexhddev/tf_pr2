@@ -1,11 +1,11 @@
 data "archive_file" "js_message_lambda_zip" {
   type        = "zip"
   source_dir  = "${path.module}/js/src"
-  output_path = "${path.module}/code.zip"
+  output_path = "${path.module}/.terraform/js_code.zip"
 }
 
 resource "aws_iam_role" "js_lambda_iam_role" {
-  name = "lambda-iam-role"
+  name = "js_lambda_iam_role"
 
   assume_role_policy = <<EOF
 {
