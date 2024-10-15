@@ -24,6 +24,16 @@ resource "aws_iam_role" "py_lambda_iam_role" {
 EOF
 }
 
+resource "aws_iam_role_policy_attachment" "py_messages_lambda_policy_attachment" {
+  role       = aws_iam_role.py_lambda_iam_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "py_messages_lambda_role_policy_attachment" {
+  role       = aws_iam_role.py_lambda_iam_role.name
+  policy_arn = aws_iam_policy.messages_bucket_access_lambda_policy.arn
+}
+
 resource "aws_lambda_function" "py_message_lambda" {
   function_name    = "hello-py-lambda"
   handler          = "lambda.main"
