@@ -44,7 +44,7 @@ resource "aws_lambda_function" "js_message_lambda" {
   role             = aws_iam_role.js_lambda_iam_role.arn
   environment {
     variables = {
-      "MESSAGE" = "Terraform sends its regards"
+      MESSAGES_BUCKET = aws_s3_bucket.messages_bucket.id
     }
   }
 }

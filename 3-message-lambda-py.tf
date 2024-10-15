@@ -36,7 +36,7 @@ resource "aws_iam_role_policy_attachment" "py_messages_lambda_role_policy_attach
 
 resource "aws_lambda_function" "py_message_lambda" {
   function_name    = "hello-py-lambda"
-  handler          = "lambda.main"
+  handler          = "lambda.handler"
   runtime          = "python3.11"
   filename         = data.archive_file.py_message_lambda_zip.output_path
   source_code_hash = data.archive_file.py_message_lambda_zip.output_base64sha256
@@ -44,7 +44,7 @@ resource "aws_lambda_function" "py_message_lambda" {
   layers = [ aws_lambda_layer_version.layer_version.arn ]
   environment {
     variables = {
-      "MESSAGE" = "Terraform sends its regards"
+      MESSAGES_BUCKET = aws_s3_bucket.messages_bucket.id
     }
   }
 }
