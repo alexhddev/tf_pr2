@@ -54,7 +54,7 @@ def handle_post(event):
         body = json.loads(event['body'])
         # put the body in the bucket
         bucket = s3_client.Bucket(bucket_name)
-        key = int(time.time() * 1000) + '.json'
+        key = str(int(time.time() * 1000)) + '.json'
         bucket.put_object(Key=key, Body=body['message'])
         return {
             'statusCode': 200,
