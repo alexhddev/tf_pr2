@@ -1,9 +1,14 @@
-import { PutObjectCommand, S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
+import { ListObjectsV2Command } from "@aws-sdk/client-s3";
+import { v4 } from 'uuid'
 
 const s3Client = new S3Client()
 const messagesBucket = process.env.MESSAGES_BUCKET
 
-async function handler(event, context) {
+async function handler(event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> {
+
+    console.log('Random uuid: ' + v4());
 
     try {
         switch (event.httpMethod) {
@@ -12,7 +17,8 @@ async function handler(event, context) {
                 const listObjectsCommand = new ListObjectsV2Command({ Bucket: messagesBucket });
 
                 const response = await s3Client.send(listObjectsCommand);
-                const objectsKeys = response.Contents.map(obj => obj.Key);
+                const objectsKeys = response.Contents!.map(obj => obj.Key);
+
     
                 return {
                     statusCode: 200,
